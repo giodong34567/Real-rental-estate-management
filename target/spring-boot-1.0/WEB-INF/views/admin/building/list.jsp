@@ -401,7 +401,7 @@
       type: "DELETE",
       success: function (response) {
         alert("Xóa tòa nhà thành công");
-        console.log("Success:", response);
+        window.location.href = "/admin/building-list";
       },
       error: function (xhr, status, error) {
         alert("Error: " + xhr.responseText);
@@ -455,14 +455,13 @@
       contentType: "application/json",
       success: function(response) {
         alert("Giao tòa nhà thành công!");
+        window.location.href = "/admin/building-list";
       },
       error: function(xhr, status, error) {
         alert("Lỗi: " + xhr.responseText);
       }
     });
   });
-
-
 </script>
 </body>
 </html>

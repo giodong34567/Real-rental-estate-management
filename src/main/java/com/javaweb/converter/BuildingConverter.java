@@ -55,7 +55,7 @@ public class BuildingConverter {
         // Kiem tra xem da ton tai hay chua
         if (buildingDTO.getId() != null) {
             buildingEntity.setId(buildingDTO.getId());
-            rentAreaRepository.deleteAllByBuilding(buildingEntity);
+            rentAreaRepository.deleteAllByBuildingIdIn(Arrays.asList(buildingDTO.getId()));
         }
 
         // Xu li RentType;
@@ -88,10 +88,11 @@ public class BuildingConverter {
 
     public BuildingDTO convertToBuildingDTO(BuildingEntity buildingEntity) {
         BuildingDTO buildingDTO = modelMapper.map(buildingEntity, BuildingDTO.class);
-        List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
-        rentAreaEntities = buildingEntity.getRentAreas();
+        List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
         String rentAreaString = rentAreaEntities.stream().map(rentArea -> rentArea.getValue().toString()).collect(Collectors.joining(","));
         buildingDTO.setRentArea(rentAreaString);
+        List<String> typeCode = Arrays.stream(buildingEntity.getTypeCode().split(",")).map(String::trim).collect(Collectors.toList());
+        buildingDTO.setTypeCode(typeCode);
         return buildingDTO;
     }
 }

@@ -335,7 +335,7 @@
                             <div class="form-group">
                                 <div class="col-xs-12 mt-3">
                                     <div class="col-xs-6 center">
-                                        <form:checkboxes items="${rentType}" path="typeCode" class="d-flex justify-content-between"/>
+                                        <form:checkboxes items="${rentType}" path="typeCode"/>
                                     </div>
                                 </div>
                             </div>
@@ -397,10 +397,19 @@
             contentType: "application/json",
             success: function (response) {
                 alert("Cập nhật tòa nhà thành công!");
-                console.log("Success:", response);
+                window.location.href = "/admin/building-list"; // Chuyển hướng về trang building-list
             },
             error: function (xhr, status, error) {
-                alert("Error: " + xhr.responseText);
+                if (xhr.status === 400) {
+                    let response = JSON.parse(xhr.responseText);
+                    if (response.details && response.details.length > 0) {
+                        alert(response.details[0]); // Hiển thị lỗi đầu tiên
+                    } else {
+                        alert(response.message); // Hiển thị thông điệp lỗi chung
+                    }
+                } else {
+                    alert("Error: " + xhr.responseText);
+                }
                 console.log("Error:", xhr.responseText);
             }
         });

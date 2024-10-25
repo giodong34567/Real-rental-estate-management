@@ -37,6 +37,9 @@ public class BuildingEntity {
     @Column(name = "district")
     private String district;
 
+    @Column(name = "structure")
+    private String structure;
+
     @Column(name = "numberofbasement")
     private Integer numberOfBasement;
 
@@ -52,14 +55,56 @@ public class BuildingEntity {
     @Column(name = "rentprice")
     private Integer rentPrice;
 
+    @Column(name = "servicefee")
+    private Integer serviceFee;
+
+    @Column(name = "carfee")
+    private Integer carFee;
+
+    @Column(name = "motofee")
+    private Integer motoFee;
+
+    @Column(name = "overtimefee")
+    private Integer overtimeFee;
+
+    @Column(name = "waterfee")
+    private Integer waterFee;
+
+    @Column(name = "electricityfee")
+    private Integer electricityFee;
+
+    @Column(name = "deposit")
+    private Integer deposit;
+
+    @Column(name = "payment")
+    private Integer payment;
+
     @Column(name = "managername")
     private String managerName;
 
     @Column(name = "managerphone")
     private String managerPhone;
 
+    @Column(name = "brokeragefee")
+    private Integer brokerageFee;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "linkofbuilding")
+    private String linkOfBuilding;
+
+    @Column(name = "map")
+    private String map;
+
+    @Column(name = "avatar")
+    private String avatar;
+
     @Column(name = "type")
     private String typeCode;
+
+    @Column(name = "rentpricedescription")
+    private String rentPriceDescription;
 
     @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
     private List<RentAreaEntity> rentAreas = new ArrayList<>();

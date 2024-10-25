@@ -68,10 +68,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     @Transactional
     public void deleteByIdIn(List<Long> ids){
-        for(Long id : ids){
-            BuildingEntity buildingEntity = buildingRepository.findById(id).get();
-            rentAreaRepository.deleteAllByBuilding(buildingEntity);
-        }
+        rentAreaRepository.deleteAllByBuildingIdIn(ids);
         assignmentBuildingRepository.deleteByBuildingIdIn(ids);
         buildingRepository.deleteByIdIn(ids);
     }
