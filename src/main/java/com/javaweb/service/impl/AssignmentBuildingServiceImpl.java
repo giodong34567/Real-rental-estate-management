@@ -40,15 +40,4 @@ public class AssignmentBuildingServiceImpl implements AssignmentBuildingService 
             assignmentBuildingRepository.save(assignmentBuildingEntity);
         }
     }
-
-
-//    @Override
-//    public List<AssignmentBuildingEntity> findByBuilding(BuildingEntity building) {
-//        return Collections.emptyList();
-//    }
-
-//    @Override
-//    List<AssignmentBuildingEntity> findByBuildingId(Long buildingId) {
-//        return assignmentBuildingRepository.findByBuildingId(buildingId);
-//    }
 }

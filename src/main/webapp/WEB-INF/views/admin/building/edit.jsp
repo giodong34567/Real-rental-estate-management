@@ -74,7 +74,7 @@
 <%--        </script>--%>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" style="font-family: 'Poppins', sans-serif">
         <div class="main-content-inner">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
@@ -339,6 +339,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 no-padding-right">Hình đại diện</label>
+                                <input class="col-sm-3 no-padding-right" type="file" id="uploadImage"/>
+                                <div class="col-sm-9">
+                                    <c:if test="${not empty buildingEdit.image}">
+                                        <c:set var="imagePath" value="/repository${buildingEdit.image}"/>
+                                        <img src="${imagePath}" id="viewImage" width="300px" height="300px" style="margin-top: 50px">
+                                    </c:if>
+                                    <c:if test="${empty buildingEdit.image}">
+                                        <img src="/admin/image/default.png" id="viewImage" width="300px" height="300px">
+                                    </c:if>
+                                </div>
+                            </div>
                             <div class="form-group" style="display: flex; justify-content: center; gap: 30px;">
                                 <c:if test="${not empty buildingEdit.id}">
                                     <form:button type="submit" id="btnAddOrUpdateBuilding" class="btn btn-primary" style="border-radius: 7px;">Sửa thông tin</form:button>
@@ -361,6 +374,36 @@
 <script src="assets/js/jquery.2.1.1.min.js"></script>
 
 <script>
+    const arrP = document.querySelectorAll(".form-group p");
+    arrP.forEach(p => {
+        p.style.fontWeight = "bold";
+    });
+
+    var imageBase64 = '';
+    var imageName = '';
+
+    $('#uploadImage').change(function (event) {
+        var reader = new FileReader();
+        var file = $(this)[0].files[0];
+        reader.onload = function(e){
+            imageBase64 = e.target.result;
+            imageName = file.name; // ten hinh khong dau, khoang cach. Dat theo format sau: a-b-c
+        };
+        reader.readAsDataURL(file);
+        openImage(this, "viewImage");
+    });
+
+
+    function openImage(input, imageView) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' +imageView).attr('src', reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
     $('#btnAddOrUpdateBuilding').click(function (e) {
         e.preventDefault(); // Ngăn chặn việc submit form mặc định
 
@@ -380,6 +423,11 @@
                 }
             }
         });
+
+        if (imageBase64 !== '') {
+            data['imageBase64'] = imageBase64;
+            data['imageName'] = imageName;
+        }
 
         if (typeCode.length > 0) {
             data['typeCode'] = typeCode;

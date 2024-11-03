@@ -55,7 +55,8 @@ public class BuildingConverter {
         // Kiem tra xem da ton tai hay chua
         if (buildingDTO.getId() != null) {
             buildingEntity.setId(buildingDTO.getId());
-            rentAreaRepository.deleteAllByBuildingIdIn(Arrays.asList(buildingDTO.getId()));
+            //rentAreaRepository.deleteAllByBuildingIdIn(Arrays.asList(buildingDTO.getId())); dung orphanRemoval nên bỏ dòng này
+
         }
 
         // Xu li RentType;
@@ -63,7 +64,6 @@ public class BuildingConverter {
             String typeCodeString = buildingDTO.getTypeCode().stream().map(String::trim).collect(Collectors.joining(", "));
             buildingEntity.setTypeCode(typeCodeString);
         }
-
         // Luu cai Repo truoc khi them rentArea
         buildingEntity = buildingRepository.save(buildingEntity);
 
@@ -93,6 +93,7 @@ public class BuildingConverter {
         buildingDTO.setRentArea(rentAreaString);
         List<String> typeCode = Arrays.stream(buildingEntity.getTypeCode().split(",")).map(String::trim).collect(Collectors.toList());
         buildingDTO.setTypeCode(typeCode);
+        buildingDTO.setImage(buildingEntity.getImage());
         return buildingDTO;
     }
 }

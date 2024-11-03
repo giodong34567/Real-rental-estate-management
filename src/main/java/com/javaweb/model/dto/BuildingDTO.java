@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildingDTO extends AbstractDTO{
+public class BuildingDTO extends AbstractDTO {
     private Long id;
     @NotBlank(message = "Tên tòa nhà không được để trống")
     private String name;

@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net" %>
 <%--
   Created by IntelliJ IDEA.
   User: ACER
@@ -11,14 +12,24 @@
 
 <html>
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>Title</title>
 
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
 </head>
 <body>
-<div class="main-content">
+<div class="main-content" style="font-family: 'Poppins', sans-serif">
   <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
       <script type="text/javascript">
@@ -211,80 +222,58 @@
       </div>
 
       <!-- BẢNG DANH SÁCH -->
-
       <div class="row mt-5">
-        <div class="col-xs-15">
-          <table id="buildingList" class="table table-striped table-bordered table-hover">
-            <thead>
-            <tr>
-              <th class="center">
-              </th>
-              <th class="center">Tên tòa nhà</th>
-              <th class="center col-xs-2">Địa chỉ</th>
-              <th class="center">Số tầng hầm</th>
-              <th class="center">Tên quản lý</th>
-              <th class="center">SĐT quản lý</th>
-              <th class="center">DT sàn</th>
-              <th class="center">DT trống</th>
-              <th class="center">DT cho thuê</th>
-              <th class="center">Giá thuê</th>
-              <th class="center">Phí dịch vụ</th>
-              <th class="center">Phí môi giới</th>
-              <th class="center">Thao tác</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <c:forEach items="${response.listResult}" var="item">
-              <tr class="center">
-                <td>
-                  <label class="pos-rel">
-                    <input type="checkbox" class="ace" value="${item.id}">
-                    <span class="lbl"></span>
-                  </label>
-                </td>
-                <td>${item.name}</td>
-                <td>${item.address}</td>
-                <td>${item.numberOfBasement}</td>
-                <td>${item.managerName}</td>
-                <td>${item.managerPhone}</td>
-                <td>${item.floorArea}</td>
-                <td>${item.emptyArea}</td>
-                <td>${item.rentArea}</td>
-                <td>${item.rentPrice}</td>
-                <td>${item.serviceFee}</td>
-                <td>${item.brokerageFee}</td>
-                <td class="d-inline-flex">
-                  <div class="hidden-sm hidden-xs btn-group">
-                    <button class="btn btn-xs btn-success" title="Giao tòa nhà" onclick="assignmentBuilding(${item.id})">
-                      <i class="ace-icon fa fa-check bigger-120"></i>
+        <div class="col-xs-12">
+          <div class="table-responsive">
+            <display:table name="response.listResult" id="buildingList" class="table table-striped table-bordered table-hover"
+                           requestURI="/admin/building-list" pagesize="5" export="false"
+                           style="margin: 3em 0 1.5em;">
+              <display:column title="" class="center">
+                <label class="pos-rel">
+                  <input type="checkbox" class="ace" value="${buildingList.id}"> <!-- Sử dụng ${buildingList.id} để lấy id -->
+                  <span class="lbl"></span>
+                </label>
+              </display:column>
+              <display:column property="name" title="Tên tòa nhà" class="center"/>
+              <display:column property="address" title="Địa chỉ" class="center col-xs-2"/>
+              <display:column property="numberOfBasement" title="Số tầng hầm" class="center"/>
+              <display:column property="managerName" title="Tên quản lý" class="center"/>
+              <display:column property="managerPhone" title="SĐT quản lý" class="center"/>
+              <display:column property="floorArea" title="DT sàn" class="center"/>
+              <display:column property="emptyArea" title="DT trống" class="center"/>
+              <display:column property="rentArea" title="DT cho thuê" class="center"/>
+              <display:column property="rentPrice" title="Giá thuê" class="center"/>
+              <display:column property="serviceFee" title="Phí dịch vụ" class="center"/>
+              <display:column property="brokerageFee" title="Phí môi giới" class="center"/>
+              <display:column title="Thao tác" class="d-inline-flex">
+                <div class="hidden-sm hidden-xs btn-group">
+                  <button class="btn btn-xs btn-success" title="Giao tòa nhà" onclick="assignmentBuilding(${buildingList.id})">
+                    <i class="ace-icon fa fa-check bigger-120"></i>
+                  </button>
+                  <a href="/admin/building-edit-${buildingList.id}">
+                    <button class="btn btn-xs btn-info">
+                      <i class="ace-icon fa fa-pencil bigger-120" title="Sửa tòa nhà"></i>
                     </button>
+                  </a>
+                  <button class="btn btn-xs btn-danger btnDeleteSingleBuilding" value="${buildingList.id}">
+                    <i class="ace-icon fa fa-trash-o bigger-120" title="Xóa tòa nhà"></i>
+                  </button>
+                </div>
+              </display:column>
+            </display:table>
 
-                    <a href="/admin/building-edit-${item.id}">
-                      <button class="btn btn-xs btn-info">
-                        <i class="ace-icon fa fa-pencil bigger-120" title="Sửa tòa nhà"></i>
-                      </button>
-                    </a>
-
-                    <button class="btn btn-xs btn-danger btnDeleteSingleBuilding" value="${item.id}">
-                      <i class="ace-icon fa fa-trash-o bigger-120" title="Xóa tòa nhà"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </c:forEach>
-            </tbody>
-          </table>
-        </div><!-- /.span -->
+          </div>
+        </div>
       </div>
     </div>
-  </div><!-- /.page-content -->
+
+    </div><!-- /.page-content -->
 </div>
 <div class="modal fade" id="assignmentBuildingModal" tabindex="-1" role="dialog" data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title center" style="font-weight: bold; font-size: 30px; color: red; m;">
+        <h5 class="modal-title center" style="font-family: 'Poppins', sans-serif;font-weight: bold; font-size: 30px; color: red;">
           Danh sách nhân viên
         </h5>
       </div>
@@ -357,7 +346,7 @@
         params.append(element.name, element.value);
       }
     });
-
+    console.log(params);
     window.location.href = form.action + '?' + params.toString();
   });
 
@@ -365,17 +354,19 @@
   const deleteSingleBuilding = [...document.getElementsByClassName("btnDeleteSingleBuilding")];
 
   deleteSingleBuilding.forEach(button => {
-    button.addEventListener("click", function(e) {
+    button.addEventListener("click", function (e) {
       e.preventDefault();
       const buildingId = this.getAttribute("value").toString();
-      if(confirm("Bạn đã xác nhận muốn xóa?")) {
+      if (confirm("Bạn đã xác nhận muốn xóa?")) {
         deleteBuildings(buildingId);
       }
     });
   });
 
+  // phân trang
 
-      // Xóa nhiêu tòa nhà
+
+  // Xóa nhiêu tòa nhà
   const btnDeleteBuilding = document.getElementById("btnDeleteBuilding");
   const buildingList = document.getElementById("buildingList");
   btnDeleteBuilding.addEventListener("click", (e) => {
@@ -384,11 +375,14 @@
     const checkedCheckboxes = buildingList.querySelectorAll('input[type="checkbox"]:checked');
     const ids = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
     if (ids.length > 0) {
-      deleteBuildings(ids);
+      if (confirm("Bạn đã xác nhận muốn xóa?")) {
+        deleteBuildings(ids);
+      }
     } else {
       alert("Bạn chưa chọn tòa nhà cần xóa!");
     }
   });
+
   function deleteBuildings(ids) {
     var idString;
     if (Array.isArray(ids)) {
@@ -424,9 +418,9 @@
       url: "/api/buildings/" + buildingId,
       type: "GET",
       dataType: "json",
-      success: function(response) {
+      success: function (response) {
         var row = "";
-        $.each(response.data, function(index, item) {
+        $.each(response.data, function (index, item) {
           row += "<tr>";
           row += "<td class='center'> <input type='checkbox' class='check-box-element' value='" + item.staffId + "' id='checkbox_" + item.staffId + "' " + item.checked + " /></td>";
           row += "<td style='width: 70%; text-align: center'>" + item.username + "</td>";
@@ -439,9 +433,9 @@
   }
 
 
-  $("#btnAssignmentBuilding").click(function() {
+  $("#btnAssignmentBuilding").click(function () {
     var selectedStaffIds = [];
-    $("#staffList input[type='checkbox']:checked").each(function() {
+    $("#staffList input[type='checkbox']:checked").each(function () {
       selectedStaffIds.push($(this).val());
     });
 
@@ -453,11 +447,11 @@
         staffIds: selectedStaffIds
       }),
       contentType: "application/json",
-      success: function(response) {
+      success: function (response) {
         alert("Giao tòa nhà thành công!");
         window.location.href = "/admin/building-list";
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         alert("Lỗi: " + xhr.responseText);
       }
     });

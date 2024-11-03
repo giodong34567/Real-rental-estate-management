@@ -33,5 +33,4 @@
         <servlet-name>DisplayImage</servlet-name>
         <url-pattern>/repository/*</url-pattern>
     </servlet-mapping>
-
 </web-app>
