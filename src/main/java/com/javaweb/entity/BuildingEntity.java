@@ -99,9 +99,13 @@ public class BuildingEntity {
     @Column(name = "rentpricedescription")
     private String rentPriceDescription;
 
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<RentAreaEntity> rentAreas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
-    private List<AssignmentBuildingEntity> staffs = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "assignmentbuilding",
+              joinColumns = @JoinColumn(name = "buildingid"),
+              inverseJoinColumns = @JoinColumn(name = "staffid")
+    )
+    private List<UserEntity> staffs = new ArrayList<>();
 }

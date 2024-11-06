@@ -4,7 +4,6 @@ import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.service.AssignmentBuildingService;
 import com.javaweb.service.BuildingService;
 import com.javaweb.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ public class BuildingAPI {
 
     @Autowired
     private BuildingService buildingService;
-
-    @Autowired
-    private AssignmentBuildingService assignmentBuildingService;
 
     @PostMapping
     public ResponseEntity<?> createOrUpdateBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
@@ -80,7 +76,7 @@ public class BuildingAPI {
     }
     @PutMapping
     public void createAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO){
-        assignmentBuildingService.createAssignmentBuilding(assignmentBuildingDTO);
+        buildingService.createAssignmentBuilding(assignmentBuildingDTO);
     }
 }
 

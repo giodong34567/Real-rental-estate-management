@@ -29,9 +29,7 @@ public class BuildingConverter {
     private BuildingRepository buildingRepository;
 
     public BuildingSearchResponse convertToBuildingSearchResponse(BuildingEntity buildingEntity) {
-        System.out.println("Converting BuildingEntity: " + buildingEntity.getId());
         List<RentAreaEntity> rentAreas = buildingEntity.getRentAreas();
-        System.out.println("Rent Areas: " + rentAreas);
 
         BuildingSearchResponse buildingSearchResponse = modelMapper.map(buildingEntity, BuildingSearchResponse.class);
         String rentAreaString = rentAreas.stream().map(rentArea -> rentArea.getValue().toString()).collect(Collectors.joining(", "));
@@ -45,7 +43,6 @@ public class BuildingConverter {
         if(districtName != null && !districtName.equals("")){
             buildingSearchResponse.setAddress(buildingEntity.getStreet() + ", " + buildingEntity.getWard() + ", " + districtName);
         }
-        System.out.println("Converted Response: " + buildingSearchResponse);
         return buildingSearchResponse;
     }
 
@@ -55,8 +52,6 @@ public class BuildingConverter {
         // Kiem tra xem da ton tai hay chua
         if (buildingDTO.getId() != null) {
             buildingEntity.setId(buildingDTO.getId());
-            //rentAreaRepository.deleteAllByBuildingIdIn(Arrays.asList(buildingDTO.getId())); dung orphanRemoval nên bỏ dòng này
-
         }
 
         // Xu li RentType;
@@ -64,10 +59,10 @@ public class BuildingConverter {
             String typeCodeString = buildingDTO.getTypeCode().stream().map(String::trim).collect(Collectors.joining(", "));
             buildingEntity.setTypeCode(typeCodeString);
         }
-        // Luu cai Repo truoc khi them rentArea
-        buildingEntity = buildingRepository.save(buildingEntity);
+
 
         // Xu li rentArea
+        List<RentAreaEntity> rentAreas = buildingEntity.getRentAreas();
         if (buildingDTO.getRentArea() != null && !buildingDTO.getRentArea().isEmpty()) {
             List<String> listRentAreas = Arrays.asList(buildingDTO.getRentArea().split(","));
             List<Integer> listRentAreasInteger = listRentAreas.stream()
@@ -79,10 +74,11 @@ public class BuildingConverter {
                 RentAreaEntity rentAreaEntity = new RentAreaEntity();
                 rentAreaEntity.setBuilding(buildingEntity);
                 rentAreaEntity.setValue(item);
-                rentAreaRepository.save(rentAreaEntity);
+                rentAreas.add(rentAreaEntity);
             }
         }
-
+        buildingEntity.setRentAreas(rentAreas);
+        buildingEntity = buildingRepository.save(buildingEntity);
         return buildingEntity;
     }
 

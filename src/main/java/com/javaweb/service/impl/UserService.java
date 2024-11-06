@@ -2,7 +2,6 @@ package com.javaweb.service.impl;
 
 import com.javaweb.constant.SystemConstant;
 import com.javaweb.converter.UserConverter;
-import com.javaweb.entity.AssignmentBuildingEntity;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
@@ -10,7 +9,6 @@ import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
@@ -41,9 +39,6 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserConverter userConverter;
-
-    @Autowired
-    private AssignmentBuildingRepository assignmentBuildingRepository;
 
     @Autowired
     private BuildingRepository buildingRepository;
@@ -210,9 +205,9 @@ public class UserService implements IUserService {
     public List<StaffResponseDTO> listStaffResponse(Long buildingId) {
         List<UserEntity> userEntities = userRepository.findByStatusAndRoles_Code(1, "STAFF");
         BuildingEntity buildingEntity = buildingRepository.findById(buildingId).get();
-        List<AssignmentBuildingEntity> assignedStaffs = assignmentBuildingRepository.findAllByBuilding(buildingEntity);
-        List<Long> assignedStaffIds = assignedStaffs.stream()
-                .map(assignment -> assignment.getUser().getId())
+        List<UserEntity> userEntitiesTemp = buildingEntity.getStaffs();
+        List<Long> assignedStaffIds = userEntitiesTemp.stream()
+                .map(userEntity -> userEntity.getId())
                 .collect(Collectors.toList());
 
         List<StaffResponseDTO> staffs = new ArrayList<>();
@@ -225,5 +220,4 @@ public class UserService implements IUserService {
         }
         return staffs;
     }
-
 }
