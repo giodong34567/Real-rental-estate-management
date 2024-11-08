@@ -40,6 +40,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Autowired
     private UploadFileUtils uploadFileUtils;
+
     @Autowired
     private UserRepository userRepository;
 

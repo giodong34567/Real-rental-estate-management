@@ -449,7 +449,6 @@
       contentType: "application/json",
       success: function (response) {
         alert("Giao tòa nhà thành công!");
-        window.location.href = "/admin/building-list";
       },
       error: function (xhr, status, error) {
         alert("Lỗi: " + xhr.responseText);

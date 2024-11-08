@@ -21,9 +21,7 @@ import java.util.stream.Collectors;
 public class BuildingConverter {
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private RentAreaRepository rentAreaRepository;
+    
 
     @Autowired
     private BuildingRepository buildingRepository;
